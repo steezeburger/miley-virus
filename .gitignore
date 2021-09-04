@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# selenium/phantomjs/webdriver stuff
+ghostdriver.log
+
+# scraped images
+scrapes/*
