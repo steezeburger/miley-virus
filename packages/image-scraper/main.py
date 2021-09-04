@@ -5,14 +5,32 @@ from urllib.parse import urlencode
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-def get_daily_search_term():
-    return 'double rainbow'
 
-def get_html(url):
+def get_html(url) -> str:
+    """
+    Returns the HTML for a given webpage.
+    """
     browser = webdriver.PhantomJS()
     browser.get(url)
     html = browser.page_source
     return html
+
+def get_soup(url):
+    html = get_html(url)
+    soup = BeautifulSoup(html, 'html.parser')
+    return soup
+
+
+def get_daily_search_term() -> str:
+    """
+    Get daily search term from SketchDaily subreddit.
+    """
+    soup = get_soup('https://www.reddit.com/r/SketchDaily/')
+    todays_header = soup.find('h3')
+
+    parts = todays_header.text.split('-')
+    search_term = parts[1].strip()
+    return search_term
 
 def scrape_top_100_results(search_term: str = get_daily_search_term()) -> None:
     """
@@ -27,9 +45,7 @@ def scrape_top_100_results(search_term: str = get_daily_search_term()) -> None:
     querystring = urlencode(query_params)
     images_url = f'{base_url}?{querystring}'
 
-    html_data = get_html(images_url)
-    soup = BeautifulSoup(html_data, 'html.parser')
-
+    soup = get_soup(images_url)
     image_items = soup.find_all('img', 'tile--img__img')
 
     for item in image_items:
