@@ -62,15 +62,18 @@ def scrape_top_100_results(search_term: str = get_daily_search_term()) -> None:
 
     # create directory for today's date
     date_string = str(date.today())
-    todays_directory = os.path.join('./scrapes', date_string)
-    os.makedirs(todays_directory)
+    todays_directory = os.path.join(
+        os.path.dirname(__file__),
+        'scrapes',
+        date_string)
+    os.makedirs(todays_directory, exist_ok=True)
 
     for item in image_items:
         image_source = f"https:{item['src']}"
         print(f'downloading {image_source}')
         res = requests.get(image_source)
 
-        filename = f"scrapes/{date_string}/{item['alt']}"
+        filename = f"scrapes/{date_string}/{item['alt']}.jpeg"
         file = open(filename, 'wb')
         file.write(res.content)
         file.close()
