@@ -2,6 +2,7 @@ beautifulsoup4==4.9.3
 bs4==0.0.1
 certifi==2021.5.30
 charset-normalizer==2.0.4
+click==8.0.1
 glitch-this==1.0.2
 idna==3.2
 numpy==1.19.5
